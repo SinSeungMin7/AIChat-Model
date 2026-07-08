@@ -57,21 +57,26 @@ function closeChat() {
 
 
 // 단체 / 개인 채팅 전환
-function switchTab(type) {
+function switchTab(type){
+    chatMode = type;
+
     const group = document.getElementById("groupChat");
-    const personal = document.getElementById("privateChat");
+    const privateChat = document.getElementById("privateChat");
+
     const buttons = document.querySelectorAll(".tab button");
 
     buttons.forEach(btn => btn.classList.remove("active"));
 
-    if (type === "group") {
+    if(type === "group"){
         group.style.display = "block";
-        personal.style.display = "none";
+        privateChat.style.display = "none";
 
         buttons[0].classList.add("active");
-    } else {
+
+        currentRoom = "group";
+    }else{
         group.style.display = "none";
-        personal.style.display = "block";
+        privateChat.style.display = "block";
 
         buttons[1].classList.add("active");
     }
@@ -87,7 +92,13 @@ function connect() {
         console.log("WebSocket 연결 성공");
 
         stompClient.subscribe('/topic/chat', function (message) {
-            showMessage(JSON.parse(message.body));
+            const msg = JSON.parse(message.body);  // 채팅 모드에 따라 출력위치를 다르게
+
+            if(msg.roomId === "group"){
+                showGroupMessage(msg);
+            }else{
+                showPrivateMessage(msg);
+            }
         });
     });
 }
@@ -113,7 +124,7 @@ function sendMessage() {
     input.value = "";
 }
 
-// 화면 출력
+/*// 화면 출력 연습 확인과정
 function showMessage(message) {
     const area = document.getElementById("messageArea");
 
@@ -122,6 +133,35 @@ function showMessage(message) {
             <b>${message.sender}</b> : ${message.message}
         </div>
     `;
+}*/
+// 그룹 메시지 화면 출력
+function showGroupMessage(message){
+    const area = document.getElementById("messageArea");
+    area.innerHTML += `
+        <div>
+            <b>${message.sender}</b> : ${message.message}
+        </div>
+    `;
+    area.scrollTop = area.scrollHeight;
+}
+// 개인 메시지 화면 출력
+function showPrivateMessage(message){
+    if(currentRoom !== message.roomId){
+        return;
+    }
+    const area = document.getElementById("dmArea");
+
+    if(!area){
+        return;
+    }
+
+    area.innerHTML += `
+        <div>
+            <b>${message.sender}</b> : ${message.message}
+        </div>
+    `;
+
+    area.scrollTop = area.scrollHeight;
 }
 
 // 페이지 로드 / enter키 눌럿을 때 바로 입력
