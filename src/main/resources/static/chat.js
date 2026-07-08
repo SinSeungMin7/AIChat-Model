@@ -7,14 +7,14 @@ let teamMembers = [];
 
 async function loadTeamMembers() {
     try {
-        const response = await fetch("/member");
+        const projectId = 1;  // 나중에는 const projectId = $("#projectId").val(); 또는 const projectId = sessionStorage.getItem("projectId");
+        const response = await fetch("/member/" + projectId);
         teamMembers = await response.json();
         loadUsers()
     } catch (e) {
         console.error("팀원 조회 실패", e);
     }
 }
-
 /*
   브라우저
      ↓

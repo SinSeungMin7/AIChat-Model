@@ -18,7 +18,11 @@ public class ProjectMemberService {
         members.add(new ProjectMember(4L,"이영희"));
     }
 
-    public List<ProjectMember> getMembers(){
+    public List<ProjectMember> getMembers(Long projectId){
+        // 현재는 테스트용
         return members;
+       /* SELECT *
+          FROM project_member
+          WHERE project_id = ?*/
     }
 }

@@ -14,10 +14,10 @@ public class ProjectMemberController {
 
     private final ProjectMemberService memberService;
 
-    @GetMapping
-    public List<ProjectMember> list(){
-
-        return memberService.getMembers();
+    @GetMapping("/{projectId}")
+    public List<ProjectMember> list(
+            @PathVariable Long projectId){
+        return memberService.getMembers(projectId);
 
     }
 
