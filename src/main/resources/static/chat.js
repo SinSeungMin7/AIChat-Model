@@ -2,28 +2,56 @@
 // 현재 채팅모드 관리
 let chatMode = "group"; // group, private
 
-// 테스트용 팀원
+// 팀원 목록 가져오기
+let teamMembers = [];
+
+async function loadTeamMembers() {
+    try {
+        const response = await fetch("/member");
+        teamMembers = await response.json();
+        loadUsers()
+    } catch (e) {
+        console.error("팀원 조회 실패", e);
+    }
+}
+
+/*
+  브라우저
+     ↓
+GET /member
+     ↓
+Spring Boot
+     ↓
+ProjectMemberService
+     ↓
+JSON 반환
+     ↓
+teamMembers 저장
+ */
+
+/* // 테스트용 팀원
 const teamMembers = [
     "신승민",
     "김철수",
     "홍길동",
     "이영희"
-];
+];*/
 
 function loadUsers(){
     const list = document.getElementById("userList");
     list.innerHTML="";
-    teamMembers.forEach(function(user){
-        if(user===currentUser){
+    teamMembers.forEach(function(member){
+        if(member.memberName === currentUser){
             return;
         }
+
         list.innerHTML += `
             <button
                 style="width:100%;padding:10px;border:none;background:white;cursor:pointer;"
-                onclick="selectUser('${user}')">
-                👤 ${user}
+                onclick="selectUser('${member.memberName}')">
+                👤 ${member.memberName}
             </button>
-        `;
+         `;
     });
 }
 
@@ -47,7 +75,7 @@ let stompClient = null;
 // 채팅 팝업 열기 (팝업 열면 자동실행)
 function openChat(){
     document.getElementById("chatModal").style.display="block";
-    loadUsers();
+    loadTeamMembers();
 }
 
 // 채팅 팝업 닫기
