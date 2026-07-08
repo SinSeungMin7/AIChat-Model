@@ -4,9 +4,10 @@ import com.example.ai.chat.dto.ChatMessage;
 import com.example.ai.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -14,21 +15,32 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
+
     private final ChatService chatService;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @MessageMapping("/chat.send")
-    @SendTo("/topic/chat")
-    public ChatMessage send(ChatMessage message) {
-        System.out.println("메시지 : " + message.getMessage());
+    public void send(ChatMessage message) {
+
         chatService.save(message);
 
-        return message;
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + message.getRoomId(),
+                message
+        );
+
     }
 
     @GetMapping("/chat/history")
     @ResponseBody
     public List<ChatMessage> history() {
         return chatService.getMessages();
+    }
+
+    @GetMapping("/chat/history/{roomId}")
+    @ResponseBody
+    public List<ChatMessage> historyByRoom(@PathVariable String roomId) {
+        return chatService.getMessages(roomId);
     }
 
 }

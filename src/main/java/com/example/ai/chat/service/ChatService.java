@@ -10,14 +10,22 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChatService {
+
     private final ChatRepository repository;
 
-    public void save(ChatMessage message){
+    // 채팅 저장
+    public void save(ChatMessage message) {
         repository.save(message);
     }
 
-    public List<ChatMessage> getMessages(){
+    // 전체 채팅 조회
+    public List<ChatMessage> getMessages() {
         return repository.findAll();
+    }
+
+    // 특정 채팅방(room)만 조회
+    public List<ChatMessage> getMessages(String roomId) {
+        return repository.findByRoom(roomId);
     }
 
 }
