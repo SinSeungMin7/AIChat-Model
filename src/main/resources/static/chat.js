@@ -1,5 +1,5 @@
 
-
+// 현재 선택한 챗팅방 저장
 const currentUser = "신승민";
 let currentRoom = "group";
 
@@ -9,8 +9,8 @@ function selectUser(user){
 
     area.innerHTML="";
 
-    area.innerHTML=`
-        <h3>${user}님과의 대화</h3>
+    area.innerHTML=`  
+        <h3>${user}님과의 대화</h3>  
     `;
 }
 
