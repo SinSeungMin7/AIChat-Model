@@ -1,19 +1,23 @@
 package com.example.ai.chat.service;
 
 import com.example.ai.chat.dto.ChatMessage;
+import com.example.ai.chat.repository.ChatRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ChatService {
-    private final List<ChatMessage> messages = new ArrayList<>();
+    private final ChatRepository repository;
+
     public void save(ChatMessage message){
-        messages.add(message);
+        repository.save(message);
     }
 
     public List<ChatMessage> getMessages(){
-        return messages;
+        return repository.findAll();
     }
+
 }

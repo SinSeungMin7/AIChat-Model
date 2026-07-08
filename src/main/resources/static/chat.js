@@ -193,21 +193,33 @@ function showPrivateMessage(message){
 }
 
 // 페이지 로드 / enter키 눌럿을 때 바로 입력
-window.onload = function () {
+wwindow.onload = function () {
     connect();
-
-    const input = document.getElementById("message");
+    loadHistory();
 
     document.getElementById("sendBtn")
         .addEventListener("click", sendMessage);
 
-    input.addEventListener("keydown", function (event) {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
+    document.getElementById("message")
+        .addEventListener("keydown", function(e){
+
+            if(e.key === "Enter"){
+                sendMessage();
+            }
+        });
+
 }
+
+// 새로고침시 채팅 다시 불러오기
+async function loadHistory() {
+
+    const response = await fetch("/chat/history");
+    const list = await response.json();
+
+    document.getElementById("messageArea").innerHTML = "";
+    list.forEach(showMessage);
+}
+
 
 /*
 // 팝업 밖을 클릭해도 닫히게
