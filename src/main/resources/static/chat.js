@@ -29,12 +29,12 @@ let currentRoom = "group";
 
 function selectUser(user){
     currentRoom = user;
-    const area = document.getElementById("privateMessageArea");
 
-    area.innerHTML="";
-
-    area.innerHTML=`  
-        <h3>${user}님과의 대화</h3>  
+    document.getElementById("privateMessageArea").innerHTML=`
+        <h3>${user}</h3>
+        <hr>
+        <div id="dmArea">
+        </div>
     `;
 }
 
@@ -88,19 +88,14 @@ function connect() {
     const socket = new SockJS('/chat');
 
     stompClient = Stomp.over(socket);
-
     stompClient.connect({}, function () {
 
         console.log("WebSocket 연결 성공");
 
         stompClient.subscribe('/topic/chat', function (message) {
-
             showMessage(JSON.parse(message.body));
-
         });
-
     });
-
 }
 
 // 메시지 보내기
@@ -164,6 +159,7 @@ window.onload = function () {
 
 }
 
+/*
 // 팝업 밖을 클릭해도 닫히게
 window.addEventListener("click", function(event){
 
@@ -175,4 +171,4 @@ window.addEventListener("click", function(event){
 
     }
 
-});
+});*/
