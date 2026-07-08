@@ -1,3 +1,7 @@
+
+// 현재 채팅모드 관리
+let chatMode = "group"; // group, private
+
 // 테스트용 팀원
 const teamMembers = [
     "신승민",
