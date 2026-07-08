@@ -1,3 +1,27 @@
+// 테스트용 팀원
+const teamMembers = [
+    "신승민",
+    "김철수",
+    "홍길동",
+    "이영희"
+];
+
+function loadUsers(){
+    const list = document.getElementById("userList");
+    list.innerHTML="";
+    teamMembers.forEach(function(user){
+        if(user===currentUser){
+            return;
+        }
+        list.innerHTML += `
+            <button
+                style="width:100%;padding:10px;border:none;background:white;cursor:pointer;"
+                onclick="selectUser('${user}')">
+                👤 ${user}
+            </button>
+        `;
+    });
+}
 
 // 현재 선택한 챗팅방 저장
 const currentUser = "신승민";
