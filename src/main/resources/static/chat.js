@@ -93,7 +93,8 @@ function sendMessage() {
 
         sender: currentUser,
         message: text,
-        roomId: "group",
+        //roomId: "group",
+        roomId: currentRoom,  /* 단체 채팅이면  roomId = group, ex)김철수 를 누르면 roomId = 김철수 로 표시*/
         type: "TALK"
 
     }));
