@@ -138,7 +138,7 @@ function showMessage(message) {
 function showGroupMessage(message){
     const area = document.getElementById("messageArea");
     area.innerHTML += `
-        <div>
+        <div> 
             <b>${message.sender}</b> : ${message.message}
         </div>
     `;
