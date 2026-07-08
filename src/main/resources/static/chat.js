@@ -40,9 +40,12 @@ function selectUser(user){
 
 let stompClient = null;
 
-// 채팅 팝업 열기
-function openChat() {
-    document.getElementById("chatModal").style.display = "block";
+// 채팅 팝업 열기 (팝업 열면 자동실행)
+function openChat(){
+
+    document.getElementById("chatModal").style.display="block";
+    loadUsers();
+
 }
 
 // 채팅 팝업 닫기
